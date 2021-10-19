@@ -22,11 +22,11 @@ jobs:
 
       - name: Create folder
         run: | 
-          mkdir Build
-          cd Build
+          mkdir C:\Notes\Build
+          cd C:\Notes\Build
           
       - name: Make qmake
-        run: qmake C:\Notes\NotesAndTests.pro
+        run: qmake C:\Notes\Notes\NotesAndTests.pro
         
       - name: Build 
         run: nmake
