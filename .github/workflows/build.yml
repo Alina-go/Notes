@@ -20,11 +20,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Create folder
-        run: | 
-          Get-ChildItem -Path C:\Notes\Build -Include * -File -Recurse | foreach { $_.Delete()}
-          mkdir C:\Notes\Build
-          cd C:\Notes\Build
+      - name: Clear folder Build
+        run: Get-ChildItem -Path C:\Notes\Build -Include * -File -Recurse | foreach { $_.Delete()}
           
       - name: Make qmake
         run: qmake C:\Notes\Notes\NotesAndTests.pro
