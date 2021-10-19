@@ -22,6 +22,7 @@ jobs:
 
       - name: Create folder
         run: | 
+          Get-ChildItem -Path C:\Notes\Build -Include * -File -Recurse | foreach { $_.Delete()}
           mkdir C:\Notes\Build
           cd C:\Notes\Build
           
