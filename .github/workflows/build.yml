@@ -1,16 +1,11 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Build-Notes
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -30,13 +25,6 @@ jobs:
           mkdir Build
           cd Build
           
-      - name: Setting up a Qt environment
-        run: |
-          set QTDIR=C:\Qt\5.12.2\msvc2017_64
-          set PATH=C:\Qt\5.12.2\msvc2017_64\bin;C:\Users\Admin\AppData\Local\Far Manager x64;C:\Program Files\Git\usr\bin;D:\Libraries\third2019\openssl\bin;%PATH%
-          echo vcvarsall
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" amd64
-          
       - name: Make qmake
         run: qmake C:\Notes\NotesAndTests.pro
         
@@ -45,6 +33,4 @@ jobs:
         
       - name: Building completed
         run: echo Сompilation is successful      
-        
-        
-        
+    
