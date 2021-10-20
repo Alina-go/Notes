@@ -28,7 +28,7 @@ jobs:
            rmdir /s /q C:\Notes\Build
            mkdir C:\Notes\Build
            cd C:\Notes\Build
-           C:\Notes\build.bat
+          
                 
       - name: Building completed
         run: echo Сompilation is successful      
