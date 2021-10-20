@@ -23,12 +23,25 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Clear Build folder
+      - name: Building
         run: | 
            rmdir /s /q C:\Notes\Build
            mkdir C:\Notes\Build
            cd C:\Notes\Build
+           C:\Notes\build.bat
+           
+      - name: Run Tests
+        run: |
+          echo Run Tests.exe
+          C:\Notes\Build\Tests\debug\Tests.exe
           
+      - name: Run Notes
+        run: |  
+          echo Run Notes.exe
+          C:\Notes\Build\Notes\debug\Notes.exe
+        
+      - name: Run Lackey
+        run: C:\Notes\Notes\GUITests\lackey_test.py
                 
       - name: Building completed
         run: echo Сompilation is successful      
