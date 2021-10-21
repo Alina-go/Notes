@@ -5,8 +5,8 @@ waitTime = 60
 
 process = subprocess.Popen("C:\\Notes\\Build\\Notes\\debug\\Notes.exe")
 
-# wait("wait_war.png",waitTime)
-# click("ok.png")
+wait("wait_vb.png",waitTime)
+click("ok_vb.png")
 
 # wait("open.png", waitTime)
 click("add_vb.png")
