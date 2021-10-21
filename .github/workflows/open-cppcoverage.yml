@@ -12,8 +12,8 @@ jobs:
       - name: Generate coverage report
         run: |
           cd C:\Notes
-          clear.bat
-          cppcoverage.bat
+          C:\Notes\clear.bat
+          C:\Notes\cppcoverage.bat
           C:\Notes\Notes\GUITests\lackey_test.py
           
       - uses: actions/upload-artifact@v2
