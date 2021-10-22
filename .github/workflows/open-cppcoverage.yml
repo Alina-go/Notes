@@ -14,7 +14,6 @@ jobs:
           cd C:\Notes
           C:\Notes\clear.bat
           C:\Notes\cppcoverage.bat
-          C:\Notes\Notes\GUITests\unit_test.py
           
       - uses: actions/upload-artifact@v2
         with:
