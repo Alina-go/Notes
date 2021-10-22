@@ -23,8 +23,5 @@ jobs:
          
       - uses: codecov/codecov-action@v1.2.1
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          # file: ./coverage.xml # optional
-          flags: unittests # optional
-          name: ${{ github.repository }} # optional
-          fail_ci_if_error: true # optional (default = false):  
+          name: ${{ github.repository }}
+          fail_ci_if_error: true  
