@@ -1,13 +1,7 @@
 name: CppCheck
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
-  workflow_dispatch:
-
+on: [push, pull_request]
 jobs:
   
   build:
@@ -19,7 +13,9 @@ jobs:
 
     steps:           
       - name: cppcheck
-        run: C:\Notes\cppcheck.bat
+        run: |
+          dir
+          ..\cppcheck.bat
         
       - uses: actions/upload-artifact@v2
         with:
