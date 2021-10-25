@@ -17,19 +17,19 @@ jobs:
 
       - name: Building
         run: |
-           rmdir /s /q $NOTES_PATH\Build
-           cd $NOTES_PATH
+           rmdir /s /q C:\actions-runner\_work\Build
+           cd C:\actions-runner\_work
            mkdir Build
            cd Build
-           ..\build.bat
+           C:\actions-runner\_work\build.bat
            
       - name: Run Tests
         run: |
           echo Run Tests
-          $NOTES_PATH\Build\Tests\debug\Tests.exe
+          C:\actions-runner\_work\Build\Tests\debug\Tests.exe
           
       - name: Run Lackey
-        run: $NOTES_PATH\Notes\GUITests\lackey_test.py
+        run: C:\actions-runner\_work\Notes\GUITests\lackey_test.py
                 
       - name: Building completed
         run: echo Сompilation is successful      
