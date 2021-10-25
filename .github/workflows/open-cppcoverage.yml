@@ -1,0 +1,19 @@
+name: Open-CppCoverage
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:      
+      - name: Generate coverage report
+        run: |
+          cd C:\Notes
+          C:\Notes\clear.bat
+          C:\Notes\cppcoverage.bat
+          
+      - uses: actions/upload-artifact@v2
+        with:
+         name: Coverage results
+         path: C:\Notes\CoverageReport\
