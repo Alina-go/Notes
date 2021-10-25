@@ -6,12 +6,7 @@ jobs:
   build:
     runs-on: self-hosted
 
-    steps:
-      - name: Switch folder
-        run : cd C:\Notes
-      - uses: actions/checkout@v2
-      - uses: codecov/codecov-action@v2
-      
+    steps:      
       - name: Generate coverage report
         run: |
           cd C:\Notes
