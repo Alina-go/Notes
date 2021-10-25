@@ -1,0 +1,28 @@
+name: CppCheck
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  
+  build:
+    name: cppcheck-test
+    runs-on: self-hosted
+    defaults:
+      run:
+        shell: cmd    
+
+    steps:           
+      - name: cppcheck
+        run: C:\Notes\cppcheck.bat
+        
+      - uses: actions/upload-artifact@v2
+        with:
+          name: CppCheck results
+          path: C:\Notes\CppCheckReport\
+    
