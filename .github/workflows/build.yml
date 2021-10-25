@@ -17,10 +17,10 @@ jobs:
 
       - name: Building
         run: | 
-           rmdir /s /q C:\Notes\Build
-           mkdir C:\Notes\Build
-           cd C:\Notes\Build
-           C:\Notes\build.bat
+           rmdir /s /q ..\Build
+           mkdir ..\Build
+           cd ..\Build
+           ..\build.bat
            
       - name: Run Tests
         run: |
