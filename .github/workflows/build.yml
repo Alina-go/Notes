@@ -1,12 +1,6 @@
 name: Build-Notes
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  workflow_dispatch:
+on: [push, pull_request]
 
 jobs:
   build:
@@ -15,11 +9,10 @@ jobs:
       run:
         shell: cmd    
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Switch folder
-        run : cd C:\Notes
       - uses: actions/checkout@v2
+        with:
+          path: C:\Notes
 
       - name: Building
         run: | 
