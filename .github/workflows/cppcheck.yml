@@ -13,12 +13,10 @@ jobs:
 
     steps:           
       - name: cppcheck
-        run: |
-          dir
-          ..\cppcheck.bat
+        run: C:\actions-runner\_work\cppcheck.bat
         
       - uses: actions/upload-artifact@v2
         with:
           name: CppCheck results
-          path: C:\Notes\CppCheckReport\
+          path: C:\actions-runner\_work\CppCheckReport\
     
