@@ -14,9 +14,10 @@ jobs:
 
       - name: Building
         run: | 
-           rmdir /s /q ..\Build
-           mkdir ..\Build
-           cd ..\Build
+           rmdir /s /q C:\actions-runner\_work\Build
+           cd C:\actions-runner\_work\
+           mkdir Build
+           cd Build
            ..\build.bat
            
       - name: Run Tests
