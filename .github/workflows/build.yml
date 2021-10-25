@@ -17,7 +17,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Switch folder
+        run : cd C:\Notes
       - uses: actions/checkout@v2
 
       - name: Building
@@ -29,7 +30,7 @@ jobs:
            
       - name: Run Tests
         run: |
-          echo Run Tests.exe
+          echo Run Tests
           C:\Notes\Build\Tests\debug\Tests.exe
           
       - name: Run Lackey
