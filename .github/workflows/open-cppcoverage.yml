@@ -9,11 +9,11 @@ jobs:
     steps:      
       - name: Generate coverage report
         run: |
-          cd C:\Notes
-          C:\Notes\clear.bat
-          C:\Notes\cppcoverage.bat
+          cd C:\actions-runner\_work
+          clear.bat
+          cppcoverage.bat
           
       - uses: actions/upload-artifact@v2
         with:
          name: Coverage results
-         path: C:\Notes\CoverageReport\
+         path: C:\actions-runner\_work\CoverageReport\
