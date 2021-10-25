@@ -10,8 +10,8 @@ jobs:
       - name: Generate coverage report
         run: |
           cd C:\actions-runner\_work
-          clear.bat
-          cppcoverage.bat
+          C:\actions-runner\_work\clear.bat
+          C:\actions-runner\_work\cppcoverage.bat
           
       - uses: actions/upload-artifact@v2
         with:
