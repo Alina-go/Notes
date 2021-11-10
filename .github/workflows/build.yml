@@ -1,6 +1,6 @@
 name: Build-Notes
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted
     defaults:
       run:
-        shell: cmd    
+        shell: cmd
 
     steps:
       - uses: actions/checkout@v2
