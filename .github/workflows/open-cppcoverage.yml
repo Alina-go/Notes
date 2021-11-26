@@ -11,8 +11,11 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    defaults:
+      run:
+        shell: git-bash.exe {0}
 
-    steps:      
+    steps:
       # - name: Generate coverage report
       #   run: |
       #     cd C:\actions-runner\_work
