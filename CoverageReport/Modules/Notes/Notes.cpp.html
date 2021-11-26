@@ -1,0 +1,467 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>Notes.cpp</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+	<body onload="prettyPrint()">
+        <h4></h4>
+		<pre class="prettyprint lang-cpp linenums">
+#include &lt;iostream&gt;
+#include &lt;QDomDocument&gt;
+
+#include "Notes.h"
+#include "TddSorting.h"
+
+#include "test_runner.h"
+
+<span style = "background-color:#dfd">Notes::Notes(): QWidget()
+{
+    QVBoxLayout *vbox1 = new QVBoxLayout();
+    QVBoxLayout *vbox2 = new QVBoxLayout();
+    QHBoxLayout *hbox1 = new QHBoxLayout();
+    QHBoxLayout *hbox2 = new QHBoxLayout();
+    QList&lt;QString&gt; list;
+    m_name = new QLineEdit;
+    m_line = new QTextEdit;
+    m_table = new CustomTableWidget(0, 2, this);
+    m_save = new QPushButton("Save");
+    m_deleteNote = new QPushButton("Delete");
+    m_saveNote = new QPushButton("Save Note");
+    m_add = new QPushButton("Add");
+    m_sortAscButton = new QPushButton("Sort Dec");
+    m_sortDecButton = new QPushButton("Sort Asc");</span>
+
+<span style = "background-color:#dfd">    hbox1-&gt;addWidget(m_sortAscButton);
+    hbox1-&gt;addWidget(m_sortDecButton);
+    hbox1-&gt;addWidget(m_save);
+    hbox1-&gt;addWidget(m_deleteNote);
+    hbox1-&gt;addWidget(m_add);</span>
+
+<span style = "background-color:#dfd">    vbox1-&gt;addWidget(m_table);
+    vbox1-&gt;addLayout(hbox1);</span>
+
+<span style = "background-color:#dfd">    vbox2-&gt;addWidget(m_name);
+    vbox2-&gt;addWidget(m_line);
+    vbox2-&gt;addWidget(m_saveNote);</span>
+
+<span style = "background-color:#dfd">    hbox2-&gt;addLayout(vbox1);
+    hbox2-&gt;addLayout(vbox2);</span>
+
+<span style = "background-color:#dfd">    list.append("Name");
+    list.append("Date");
+    m_table-&gt;setHorizontalHeaderLabels(QStringList(list));
+    m_table-&gt;horizontalHeader()-&gt;setStretchLastSection(true);
+    m_table-&gt;setSelectionMode(QAbstractItemView::SingleSelection);
+    m_saveNote-&gt;setDisabled(true);
+    m_line-&gt;setDisabled(true);
+    m_name-&gt;setDisabled(true);
+    m_table-&gt;setMouseTracking(true);</span>
+
+<span style = "background-color:#dfd">    connect(m_table, SIGNAL(DeactivateTE()), this, SLOT(deactivateTE()));
+    m_notes = loadFromXML();
+    fillTable(m_notes);</span>
+
+//    TddSorting* tdd = new TddSorting(this);
+
+<span style = "background-color:#dfd">    connect(m_table,SIGNAL(cellClicked(int,int)), this,SLOT(activateTextEdit(int)));
+    connect(m_save,SIGNAL(clicked(bool)),this,SLOT(saveToXML()));
+    connect(m_deleteNote,SIGNAL(clicked(bool)),this,SLOT(dellNote()));
+    connect(m_add,SIGNAL(clicked(bool)),this,SLOT(addField()));
+    connect(m_sortAscButton,SIGNAL(clicked(bool)),this,SLOT(SortAcs()));
+    connect(m_sortDecButton,SIGNAL(clicked(bool)),this,SLOT(SortDec()));
+    connect(m_saveNote,SIGNAL(clicked(bool)), this,SLOT(updateNote()));</span>
+
+<span style = "background-color:#dfd">    this-&gt;setLayout(hbox2);</span>
+
+<span style = "background-color:#dfd">    setStyleSheet("QPushButton{"</span>
+                  "background: #7B68EE;"
+                  "}"
+                  "QPushButton:disabled{"
+                  "background: #DCDCDC; "
+                  "}"
+                  "QHeaderView{"
+                  "background: #7B68EE;"
+                  "border: none;"
+                  "font-style: italic;"
+                  "}"
+                  "QTableWidget QTableCornerButton::section {"
+                  "background: #7B68EE;"
+                  "}"
+                  "QTextEdit{"
+                  "background: #FAFAD2;"
+                  "font-style: italic;"
+                  "}"
+                  "QLineEdit{"
+                  "background: #FAFAD2;"
+                  "font-style: italic ;"
+                  "}"
+                  );
+<span style = "background-color:#dfd">}</span>
+
+<span style = "background-color:#fdd">void Notes::deactivateTE() {
+    m_saveNote-&gt;setDisabled(true);
+    m_name-&gt;setDisabled(true);
+    m_line-&gt;setDisabled(true);
+}</span>
+
+void Notes::SortAcs()
+<span style = "background-color:#fdd">{
+    sortAcsNotes(m_notes, NoteSortCriterion::Name);
+    m_table-&gt;setRowCount(0);
+    fillTable(m_notes);
+}</span>
+
+void Notes::SortDec()
+<span style = "background-color:#fdd">{
+    sortDecNotes(m_notes, NoteSortCriterion::Name);
+    m_table-&gt;setRowCount(0);
+    fillTable(m_notes);
+}</span>
+
+<span style = "background-color:#fdd">void Notes::sortAcsNotes(QList&lt;Note&gt;&amp; notes, NoteSortCriterion criterion) {
+    switch(criterion)</span>
+    {
+    case NoteSortCriterion::Name:
+<span style = "background-color:#fdd">        std::sort(notes.begin(), notes.end(), [] (Note a, Note b) { return a.getName() &lt; b.getName(); });
+        break;</span>
+    case NoteSortCriterion::Date:
+<span style = "background-color:#fdd">        std::sort(notes.begin(), notes.end(), [] (Note a, Note b) { return a.getDate()&lt; b.getDate(); });</span>
+        break;
+    }
+<span style = "background-color:#fdd">}</span>
+
+void Notes::sortDecNotes(QList&lt;Note&gt; &amp;notes, NoteSortCriterion criterion)
+<span style = "background-color:#fdd">{
+    switch(criterion)</span>
+    {
+    case NoteSortCriterion::Name:
+<span style = "background-color:#fdd">        std::sort(notes.begin(), notes.end(), [] (Note a, Note b) { return a.getName() &gt; b.getName(); });
+        break;</span>
+    case NoteSortCriterion::Date:
+<span style = "background-color:#fdd">        std::sort(notes.begin(), notes.end(), [] (Note a, Note b) { return a.getDate() &gt; b.getDate(); });</span>
+        break;
+    }
+<span style = "background-color:#fdd">}</span>
+
+
+<span style = "background-color:#dfd">void Notes::fillTable(QList&lt;Note&gt; notes) {
+    for (int i = 0; i &lt; notes.count(); i++) {</span>
+<span style = "background-color:#fdd">        qDebug() &lt;&lt; notes[i].getName() &lt;&lt; ":" &lt;&lt; notes[i].getDate() &lt;&lt; ":" &lt;&lt; notes[i].getText();
+        m_table-&gt;insertRow(0);
+        m_table-&gt;setItem(0, 0, new QTableWidgetItem(notes[i].getName()));
+        m_table-&gt;setItem(0, 1, new QTableWidgetItem(notes[i].getDate()));
+        m_table-&gt;item(0,0)-&gt;setFlags(Qt::ItemIsEnabled);
+        m_table-&gt;item(0,1)-&gt;setFlags(Qt::ItemIsEnabled);
+    }</span>
+<span style = "background-color:#dfd">}</span>
+
+<span style = "background-color:#fdd">void Notes::updateNote() {
+    int row = m_table-&gt;currentIndex().row();
+    for (int i = 0; i &lt; m_notes.count(); i++) {</span>
+        if (m_notes[i].getName() == m_name-&gt;text()
+                &amp;&amp; m_notes[i].getDate() == m_table-&gt;item(row,1)-&gt;text()
+<span style = "background-color:#fdd">                &amp;&amp; m_notes[i].getUuid() != m_curUuid) {
+            QMessageBox::information(this, "Notes", "Please rename the note.");
+            return;</span>
+        }
+<span style = "background-color:#fdd">    }
+    for (int i = 0; i &lt; m_notes.count(); i++) {
+        if (m_notes[i].getUuid() == m_curUuid) {
+            m_notes[i].setName(m_name-&gt;text());
+            m_notes[i].setText(m_line-&gt;toPlainText());
+            m_table-&gt;item(row, 0)-&gt;setText(m_name-&gt;text());</span>
+
+        }
+<span style = "background-color:#fdd">    }
+    deactivateTE();
+}</span>
+
+<span style = "background-color:#dfd">void Notes::saveToXML(){    //ÑÐ¾ÑÑÐ°Ð½ÑÐµÑ xml ÑÐ°Ð¹Ð»
+    QFile file("fileName.xml");
+    if (!file.open(QIODevice::WriteOnly)) {</span>
+<span style = "background-color:#fdd">        QMessageBox::critical(this, "", tr("Error save to file.\n%1").arg(file.errorString()));
+        return;</span>
+    }
+
+<span style = "background-color:#dfd">    QXmlStreamWriter stream(&amp;file);
+    stream.setAutoFormatting(true);
+    stream.writeStartDocument();
+    stream.writeStartElement("ROWDATA");</span>
+
+<span style = "background-color:#dfd">    for (int i = 0; i &lt; m_notes.count(); i++) {
+        stream.writeStartElement("ROW");
+        stream.writeTextElement("name",m_notes[i].getName());
+        stream.writeTextElement("date", m_notes[i].getDate());
+        stream.writeTextElement("text", m_notes[i].getText());
+        stream.writeEndElement();
+    }
+    stream.writeEndElement();
+    stream.writeEndDocument();
+    file.close();
+}</span>
+
+<span style = "background-color:#dfd">QList&lt;Note&gt; Notes::loadFromXML() {     //Ð°Ð²ÑÐ¾Ð¼Ð°ÑÐ¸ÑÐµÑÐºÐ¸ Ð¿Ð¾Ð´Ð³ÑÑÐ¶Ð°ÐµÑ ÑÐ¾ÑÑÐ°Ð½ÐµÐ½Ð½ÑÐµ Ð·Ð°Ð¼ÐµÑÐºÐ¸
+    QList&lt;Note&gt; notes;
+    QFile* file = new QFile("fileName.xml");
+    if (!file-&gt;open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this,</span>
+                              "QXSRExample::parseXML",
+                              "Couldn't open example.xml",
+                              QMessageBox::Ok);
+<span style = "background-color:#dfd">        return notes;</span>
+    }
+<span style = "background-color:#fdd">    QXmlStreamReader xml(file);
+    while(!xml.atEnd() &amp;&amp; !xml.hasError()) {
+        QXmlStreamReader::TokenType token = xml.readNext();
+        if(token == QXmlStreamReader::StartDocument) {
+            continue;</span>
+        }
+<span style = "background-color:#fdd">        if(token == QXmlStreamReader::StartElement) {
+            if(xml.name() == "ROWDATA") {
+                continue;</span>
+            }
+<span style = "background-color:#fdd">            if(xml.name() == "ROW") {
+                notes.append(addField(xml));</span>
+            }
+        }
+<span style = "background-color:#fdd">    }
+    if(xml.hasError()) {
+        QMessageBox::critical(this,</span>
+                              "QXSRExample::parseXML",
+                              xml.errorString(),
+                              QMessageBox::Ok);
+    }
+<span style = "background-color:#fdd">   xml.clear();
+   return notes;</span>
+<span style = "background-color:#dfd">}</span>
+
+void Notes::closeEvent(QCloseEvent *event)
+<span style = "background-color:#dfd">{
+    saveToXML();
+    event-&gt;accept();
+}</span>
+
+<span style = "background-color:#fdd">void Notes::setTE(int id) {
+    for (int i = 0; i &lt; m_notes.count(); i++) {
+        if (m_notes[i].getName() == m_table-&gt;item(id,0)-&gt;text() &amp;&amp; m_notes[i].getDate() == m_table-&gt;item(id,1)-&gt;text())
+            m_line-&gt;setText(m_notes[i].getText());
+    }
+}</span>
+
+CustomTableWidget *Notes::getTable() const
+<span style = "background-color:#fdd">{
+    return m_table;
+}</span>
+
+QList&lt;Note&gt; Notes::getNotes()
+<span style = "background-color:#fdd">{
+    return m_notes;
+}</span>
+
+<span style = "background-color:#fdd">Note Notes::addField(QXmlStreamReader&amp; xml){
+    QString name;
+    QString date;
+    QString text;</span>
+
+<span style = "background-color:#fdd">    xml.readNext();
+    while(!(xml.tokenType() == QXmlStreamReader::EndElement &amp;&amp;</span>
+            xml.name() == "ROW")) {
+<span style = "background-color:#fdd">        if(xml.tokenType() == QXmlStreamReader::StartElement) {
+             if(xml.name() == "name") {
+                xml.readNext();
+                name = xml.text().toString();</span>
+            }
+<span style = "background-color:#fdd">             if(xml.name() == "date") {
+                xml.readNext();
+                date = xml.text().toString();</span>
+
+            }
+<span style = "background-color:#fdd">             if(xml.name() == "text") {
+                 xml.readNext();
+                 text = xml.text().toString();</span>
+             }
+        }
+<span style = "background-color:#fdd">        xml.readNext();
+    }
+    return Note(name, date, text, QUuid::createUuid());
+}</span>
+
+<span style = "background-color:#fdd">void Notes::dellNote(){//ÑÐ´Ð°Ð»ÑÐµÑ Ð¿Ð¾Ð»Ðµ
+    deactivateTE();</span>
+
+<span style = "background-color:#fdd">    int x = m_table-&gt;currentRow();
+    qDebug() &lt;&lt; x;
+    if (x &lt; 0)
+        return;
+    for (int i = 0; i &lt; m_notes.count(); i++) {
+        if (m_notes[i].getName() == m_table-&gt;item(x,0)-&gt;text() &amp;&amp; m_notes[i].getDate() == m_table-&gt;item(x,1)-&gt;text())
+            m_notes.removeAt(i);
+    }
+    m_table-&gt;removeRow(x);
+}</span>
+
+<span style = "background-color:#fdd">void Notes::activateTextEdit(int id) {
+    m_saveNote-&gt;setDisabled(false);
+    m_name-&gt;setDisabled(0);
+    m_name-&gt;setText(m_table-&gt;item(id,0)-&gt;text());
+    m_line-&gt;setDisabled(0);
+    for (int i = 0; i &lt; m_notes.count(); i++) {
+        if (m_notes[i].getName() == m_table-&gt;item(id,0)-&gt;text() &amp;&amp; m_notes[i].getDate() == m_table-&gt;item(id,1)-&gt;text()) {
+            m_curUuid = m_notes[i].getUuid();
+            m_line-&gt;setText(m_notes[i].getText());
+            break;</span>
+        }
+<span style = "background-color:#fdd">    }
+}</span>
+
+<span style = "background-color:#dfd">void Notes::addField(){//Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ Ð¿Ð¾Ð»Ðµ
+    QString name;
+    QString date;
+    QString text;
+    bool repeat = true;
+    int iter = 0;
+    m_table-&gt;insertRow(0);
+    date = QDate::currentDate().toString(Qt::ISODate);
+    int count = m_table-&gt;rowCount();
+    while (repeat) {
+        repeat = false;
+        name = QString("ÐÐ°Ð¼ÐµÑÐºÐ° " + QString::number(count + iter));
+        for (int i = 0; i &lt; m_notes.count(); i++) {</span>
+<span style = "background-color:#fdd">            if (m_notes[i].getName() == name &amp;&amp; m_notes[i].getDate() == date) {
+                iter++;
+                repeat = true;
+                break;</span>
+            }
+<span style = "background-color:#fdd">        }</span>
+<span style = "background-color:#dfd">    }
+    QTableWidgetItem *item = new QTableWidgetItem(name);
+    m_table-&gt;setItem(0, 0, item);
+    m_table-&gt;item(0,0)-&gt;setFlags(Qt::ItemIsEnabled);
+    m_table-&gt;setItem(0, 1, new QTableWidgetItem(date, QTableWidgetItem::Type));
+    m_table-&gt;item(0,1)-&gt;setFlags(Qt::ItemIsEnabled);
+    text = name;</span>
+//    m_table-&gt;setSortingEnabled(true);
+<span style = "background-color:#dfd">    QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows;
+    QModelIndex index = m_table-&gt;model()-&gt;index(item-&gt;row(), 0);
+    m_table-&gt;selectionModel()-&gt;select(index, flags);
+    m_table-&gt;scrollToItem(item);
+    m_notes.append(Note(name, date, text, QUuid::createUuid()));
+    saveToXML();
+}</span>
+
+<span style = "background-color:#fdd">void Notes::TestAscSortingName() {
+    QList&lt;QUuid&gt; uuids;
+    for (int i = 0; i &lt; 7; ++i)
+        uuids.push_back(QUuid::createUuid());</span>
+
+<span style = "background-color:#fdd">    QList&lt;Note&gt; before_sort;
+    before_sort.push_back(Note("Ezhednevnik", "2020-20-12", "lorem ipsum", uuids[0]));
+    before_sort.push_back(Note("Otdykh", "2020-20-12", "lorem ipsum", uuids[1]));
+    before_sort.push_back(Note("Otpusk", "2020-20-12", "lorem ipsum", uuids[2]));
+    before_sort.push_back(Note("Olphovit", "2020-20-12", "lorem ipsum", uuids[3]));
+    before_sort.push_back(Note("Alfavit", "2020-20-12", "lorem ipsum", uuids[4]));
+    before_sort.push_back(Note("Zheraf", "2020-20-12", "lorem ipsum", uuids[5]));
+    before_sort.push_back(Note("Zhara", "2020-20-12", "lorem ipsum", uuids[6]));</span>
+
+<span style = "background-color:#fdd">    QList&lt;Note&gt; after_sort;
+    after_sort.push_back(Note("Alfavit", "2020-20-12", "lorem ipsum", uuids[4]));
+    after_sort.push_back(Note("Ezhednevnik", "2020-20-12", "lorem ipsum", uuids[0]));
+    after_sort.push_back(Note("Olphovit", "2020-20-12", "lorem ipsum", uuids[3]));
+    after_sort.push_back(Note("Otdykh", "2020-20-12", "lorem ipsum", uuids[1]));
+    after_sort.push_back(Note("Otpusk", "2020-20-12", "lorem ipsum", uuids[2]));
+    after_sort.push_back(Note("Zhara", "2020-20-12", "lorem ipsum", uuids[6]));
+    after_sort.push_back(Note("Zheraf", "2020-20-12", "lorem ipsum", uuids[5]));</span>
+
+<span style = "background-color:#fdd">    sortAcsNotes(before_sort, NoteSortCriterion::Name);
+    AssertEqual(before_sort, after_sort, "Sort ASC by name");
+}</span>
+
+void Notes::TestAscSortingDate()
+<span style = "background-color:#fdd">{
+    QList&lt;QUuid&gt; uuids;
+    for (int i = 0; i &lt; 7; ++i)
+        uuids.push_back(QUuid::createUuid());</span>
+
+<span style = "background-color:#fdd">    QList&lt;Note&gt; date_before_sort;
+    date_before_sort.push_back(Note("Ezhednevnik", "1920-20-12", "lorem ipsum", uuids[0]));
+    date_before_sort.push_back(Note("Otdykh", "2020-22-11", "lorem ipsum", uuids[1]));
+    date_before_sort.push_back(Note("Otpusk", "3002-10-02", "lorem ipsum", uuids[2]));
+    date_before_sort.push_back(Note("Olphovit", "1120-24-11", "lorem ipsum", uuids[3]));
+    date_before_sort.push_back(Note("Alfavit", "4200-09-01", "lorem ipsum", uuids[4]));
+    date_before_sort.push_back(Note("Zheraf", "0230-02-03", "lorem ipsum", uuids[5]));
+    date_before_sort.push_back(Note("Zhara", "0230-30-06", "lorem ipsum", uuids[6]));</span>
+
+<span style = "background-color:#fdd">    QList&lt;Note&gt; date_after_sort;
+    date_after_sort.push_back(Note("Zheraf", "0230-02-03", "lorem ipsum", uuids[5]));
+    date_after_sort.push_back(Note("Zhara", "0230-30-06", "lorem ipsum", uuids[6]));
+    date_after_sort.push_back(Note("Olphovit", "1120-24-11", "lorem ipsum", uuids[3]));
+    date_after_sort.push_back(Note("Ezhednevnik", "1920-20-12", "lorem ipsum", uuids[0]));
+    date_after_sort.push_back(Note("Otdykh", "2020-22-11", "lorem ipsum", uuids[1]));
+    date_after_sort.push_back(Note("Otpusk", "3002-10-02", "lorem ipsum", uuids[2]));
+    date_after_sort.push_back(Note("Alfavit", "4200-09-01", "lorem ipsum", uuids[4]));</span>
+
+<span style = "background-color:#fdd">    sortAcsNotes(date_before_sort, NoteSortCriterion::Date);
+    AssertEqual(date_before_sort, date_after_sort, "Sort ASC by date");
+}</span>
+
+void Notes::TestDecSortingName()
+<span style = "background-color:#fdd">{
+    QList&lt;QUuid&gt; uuids;
+    for (int i = 0; i &lt; 7; ++i)
+        uuids.push_back(QUuid::createUuid());</span>
+
+<span style = "background-color:#fdd">    QList&lt;Note&gt; name_before_sort;
+    name_before_sort.push_back(Note("f", "2020-20-12", "lorem ipsum", uuids[0]));
+    name_before_sort.push_back(Note("x", "2020-20-12", "lorem ipsum", uuids[1]));
+    name_before_sort.push_back(Note("h", "2020-20-12", "lorem ipsum", uuids[2]));
+    name_before_sort.push_back(Note("a", "2020-20-12", "lorem ipsum", uuids[3]));
+    name_before_sort.push_back(Note("z", "2020-20-12", "lorem ipsum", uuids[4]));
+    name_before_sort.push_back(Note("j", "2020-20-12", "lorem ipsum", uuids[5]));
+    name_before_sort.push_back(Note("e", "2020-20-12", "lorem ipsum", uuids[6]));</span>
+
+<span style = "background-color:#fdd">    QList&lt;Note&gt; name_after_sort;
+    name_after_sort.push_back(Note("z", "2020-20-12", "lorem ipsum", uuids[4]));
+    name_after_sort.push_back(Note("x", "2020-20-12", "lorem ipsum", uuids[1]));
+    name_after_sort.push_back(Note("j", "2020-20-12", "lorem ipsum", uuids[5]));
+    name_after_sort.push_back(Note("h", "2020-20-12", "lorem ipsum", uuids[2]));
+    name_after_sort.push_back(Note("f", "2020-20-12", "lorem ipsum", uuids[0]));
+    name_after_sort.push_back(Note("e", "2020-20-12", "lorem ipsum", uuids[6]));
+    name_after_sort.push_back(Note("a", "2020-20-12", "lorem ipsum", uuids[3]));</span>
+
+<span style = "background-color:#fdd">    sortDecNotes(name_before_sort, NoteSortCriterion::Name);
+    AssertEqual(name_before_sort, name_after_sort, "Sort DEC by name");</span>
+
+<span style = "background-color:#fdd">}</span>
+
+<span style = "background-color:#fdd">void Notes::TestDecSortingDate() {
+    QList&lt;QUuid&gt; uuids;
+    for (int i = 0; i &lt; 7; ++i)
+        uuids.push_back(QUuid::createUuid());</span>
+
+<span style = "background-color:#fdd">    QList&lt;Note&gt; date_before_sort;
+    date_before_sort.push_back(Note("Ezhednevnik", "1920-20-12", "lorem ipsum", uuids[0]));
+    date_before_sort.push_back(Note("Alfavit", "4200-09-01", "lorem ipsum", uuids[4]));
+    date_before_sort.push_back(Note("Otpusk", "3002-10-02", "lorem ipsum", uuids[2]));
+    date_before_sort.push_back(Note("Olphovit", "1120-24-11", "lorem ipsum", uuids[3]));
+    date_before_sort.push_back(Note("Otdykh", "2020-22-11", "lorem ipsum", uuids[1]));
+    date_before_sort.push_back(Note("Zhara", "0230-30-06", "lorem ipsum", uuids[6]));
+    date_before_sort.push_back(Note("Zheraf", "0230-02-03", "lorem ipsum", uuids[5]));</span>
+
+
+<span style = "background-color:#fdd">    QList&lt;Note&gt; date_after_sort;
+    date_after_sort.push_back(Note("Alfavit", "4200-09-01", "lorem ipsum", uuids[4]));
+    date_after_sort.push_back(Note("Otpusk", "3002-10-02", "lorem ipsum", uuids[2]));
+    date_after_sort.push_back(Note("Otdykh", "2020-22-11", "lorem ipsum", uuids[1]));
+    date_after_sort.push_back(Note("Ezhednevnik", "1920-20-12", "lorem ipsum", uuids[0]));
+    date_after_sort.push_back(Note("Olphovit", "1120-24-11", "lorem ipsum", uuids[3]));
+    date_after_sort.push_back(Note("Zhara", "0230-30-06", "lorem ipsum", uuids[6]));
+    date_after_sort.push_back(Note("Zheraf", "0230-02-03", "lorem ipsum", uuids[5]));</span>
+
+<span style = "background-color:#fdd">    sortDecNotes(date_before_sort, NoteSortCriterion::Date);
+    AssertEqual(date_before_sort, date_after_sort, "Sort DEC by date");
+}</span></pre>
+	</body>
+</html>

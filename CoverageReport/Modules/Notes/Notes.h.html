@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>Notes.h</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+	<body onload="prettyPrint()">
+        <h4></h4>
+		<pre class="prettyprint lang-cpp linenums">
+#pragma once
+
+#include &lt;../Notes/CustomTableWidget.h&gt;
+#include &lt;QtWidgets&gt;
+#include "AboutNote.h"
+
+enum NoteSortCriterion {
+    Name,
+    Date
+};
+
+class Notes : public QWidget {
+<span style = "background-color:#fdd">    Q_OBJECT</span>
+public:
+    Notes();
+    void fillTable(QList&lt;Note&gt; m_notes);
+    QList&lt;Note&gt; loadFromXML();
+    void closeEvent(QCloseEvent *event);
+
+//    template&lt;class T&gt;
+//    void sortAcsNotes(const T&amp; notes, NoteSortCriterion criterion);
+//    template&lt;class Tt&gt;
+//    void sortDecNotes(const Tt&amp; notes, NoteSortCriterion criterion);
+
+    static void sortAcsNotes(QList&lt;Note&gt;&amp; getNotes, NoteSortCriterion criterion);
+    static void sortDecNotes(QList&lt;Note&gt;&amp; getNotes, NoteSortCriterion criterion);
+
+    QList&lt;Note&gt; getNotes();
+    CustomTableWidget *getTable() const;
+
+    static void TestAscSortingName();
+    static void TestAscSortingDate();
+    static void TestDecSortingName();
+    static void TestDecSortingDate();
+
+public slots:
+    void SortAcs();
+    void SortDec();
+    void updateNote();
+    void deactivateTE();
+    void activateTextEdit(int row);
+    void dellNote();
+    void addField();
+    Note addField(QXmlStreamReader&amp; xml);
+    void saveToXML();
+    void setTE(int id);
+private:
+    QUuid m_curUuid;
+    QTableWidgetItem* m_field;
+    CustomTableWidget* m_table;
+    QTextEdit* m_line;
+    QLineEdit* m_name;
+    QPushButton* m_save;
+    QPushButton* m_deleteNote;
+    QPushButton* m_add;
+    QPushButton* m_saveNote;
+    QList&lt;Note&gt; m_notes;
+    QPushButton *m_sortAscButton;
+    QPushButton *m_sortDecButton;
+};
+
+</pre>
+	</body>
+</html>

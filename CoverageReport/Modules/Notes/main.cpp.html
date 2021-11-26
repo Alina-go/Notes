@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>main.cpp</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+	<body onload="prettyPrint()">
+        <h4></h4>
+		<pre class="prettyprint lang-cpp linenums">
+#include &lt;QtWidgets&gt;
+#include "Notes.h"
+//#include "test_runner.h"
+
+//void TestAscSorting() {
+//    QList&lt;QUuid&gt; uuids;
+//    for (int i = 0; i &lt; 7; ++i)
+//        uuids.push_back(QUuid::createUuid());
+
+//    QList&lt;Note&gt; before_sort;
+//    before_sort.push_back(Note("Ezhednevnik", "2020-20-12", "lorem ipsum", uuids[0]));
+//    before_sort.push_back(Note("Otdykh", "2020-20-12", "lorem ipsum", uuids[1]));
+//    before_sort.push_back(Note("Otpusk", "2020-20-12", "lorem ipsum", uuids[2]));
+//    before_sort.push_back(Note("Olphovit", "2020-20-12", "lorem ipsum", uuids[3]));
+//    before_sort.push_back(Note("Alfavit", "2020-20-12", "lorem ipsum", uuids[4]));
+//    before_sort.push_back(Note("Zheraf", "2020-20-12", "lorem ipsum", uuids[5]));
+//    before_sort.push_back(Note("Zhara", "2020-20-12", "lorem ipsum", uuids[6]));
+
+//    QList&lt;Note&gt; after_sort;
+//    after_sort.push_back(Note("Alfavit", "2020-20-12", "lorem ipsum", uuids[4]));
+//    after_sort.push_back(Note("Ezhednevnik", "2020-20-12", "lorem ipsum", uuids[0]));
+//    after_sort.push_back(Note("Olphovit", "2020-20-12", "lorem ipsum", uuids[3]));
+//    after_sort.push_back(Note("Otdykh", "2020-20-12", "lorem ipsum", uuids[1]));
+//    after_sort.push_back(Note("Otpusk", "2020-20-12", "lorem ipsum", uuids[2]));
+//    after_sort.push_back(Note("Zhara", "2020-20-12", "lorem ipsum", uuids[6]));
+//    after_sort.push_back(Note("Zheraf", "2020-20-12", "lorem ipsum", uuids[5]));
+
+//    Notes::sortAcsNotes(before_sort, NoteSortCriterion::Name);
+//    AssertEqual(before_sort, after_sort, "Sort ASC by name");
+
+//    QList&lt;Note&gt; date_before_sort;
+//    date_before_sort.push_back(Note("Ezhednevnik", "1920-20-12", "lorem ipsum", uuids[0]));
+//    date_before_sort.push_back(Note("Otdykh", "2020-22-11", "lorem ipsum", uuids[1]));
+//    date_before_sort.push_back(Note("Otpusk", "3002-10-02", "lorem ipsum", uuids[2]));
+//    date_before_sort.push_back(Note("Olphovit", "1120-24-11", "lorem ipsum", uuids[3]));
+//    date_before_sort.push_back(Note("Alfavit", "4200-09-01", "lorem ipsum", uuids[4]));
+//    date_before_sort.push_back(Note("Zheraf", "0230-02-03", "lorem ipsum", uuids[5]));
+//    date_before_sort.push_back(Note("Zhara", "0230-30-06", "lorem ipsum", uuids[6]));
+
+//    QList&lt;Note&gt; date_after_sort;
+//    date_after_sort.push_back(Note("Zheraf", "0230-02-03", "lorem ipsum", uuids[5]));
+//    date_after_sort.push_back(Note("Zhara", "0230-30-06", "lorem ipsum", uuids[6]));
+//    date_after_sort.push_back(Note("Olphovit", "1120-24-11", "lorem ipsum", uuids[3]));
+//    date_after_sort.push_back(Note("Ezhednevnik", "1920-20-12", "lorem ipsum", uuids[0]));
+//    date_after_sort.push_back(Note("Otdykh", "2020-22-11", "lorem ipsum", uuids[1]));
+//    date_after_sort.push_back(Note("Otpusk", "3002-10-02", "lorem ipsum", uuids[2]));
+//    date_after_sort.push_back(Note("Alfavit", "4200-09-01", "lorem ipsum", uuids[4]));
+
+//    Notes::sortAcsNotes(date_before_sort, NoteSortCriterion::Date);
+//    AssertEqual(date_before_sort, date_after_sort, "Sort ASC by date");
+//}
+
+//void TestDecSorting() {}
+//    QList&lt;QUuid&gt; uuids;
+//    for (int i = 0; i &lt; 7; ++i)
+//        uuids.push_back(QUuid::createUuid());
+
+//    QList&lt;Note&gt; name_before_sort;
+//    name_before_sort.push_back(Note("f", "2020-20-12", "lorem ipsum", uuids[0]));
+//    name_before_sort.push_back(Note("x", "2020-20-12", "lorem ipsum", uuids[1]));
+//    name_before_sort.push_back(Note("h", "2020-20-12", "lorem ipsum", uuids[2]));
+//    name_before_sort.push_back(Note("a", "2020-20-12", "lorem ipsum", uuids[3]));
+//    name_before_sort.push_back(Note("z", "2020-20-12", "lorem ipsum", uuids[4]));
+//    name_before_sort.push_back(Note("j", "2020-20-12", "lorem ipsum", uuids[5]));
+//    name_before_sort.push_back(Note("e", "2020-20-12", "lorem ipsum", uuids[6]));
+
+//    QList&lt;Note&gt; name_after_sort;
+//    name_after_sort.push_back(Note("z", "2020-20-12", "lorem ipsum", uuids[4]));
+//    name_after_sort.push_back(Note("x", "2020-20-12", "lorem ipsum", uuids[1]));
+//    name_after_sort.push_back(Note("j", "2020-20-12", "lorem ipsum", uuids[5]));
+//    name_after_sort.push_back(Note("h", "2020-20-12", "lorem ipsum", uuids[2]));
+//    name_after_sort.push_back(Note("f", "2020-20-12", "lorem ipsum", uuids[0]));
+//    name_after_sort.push_back(Note("e", "2020-20-12", "lorem ipsum", uuids[6]));
+//    name_after_sort.push_back(Note("a", "2020-20-12", "lorem ipsum", uuids[3]));
+
+//    Notes::sortDecNotes(name_before_sort, NoteSortCriterion::Name);
+//    AssertEqual(name_before_sort, name_after_sort, "Sort DEC by name");
+
+//    QList&lt;Note&gt; date_before_sort;
+//    date_before_sort.push_back(Note("Ezhednevnik", "1920-20-12", "lorem ipsum", uuids[0]));
+//    date_before_sort.push_back(Note("Alfavit", "4200-09-01", "lorem ipsum", uuids[4]));
+//    date_before_sort.push_back(Note("Otpusk", "3002-10-02", "lorem ipsum", uuids[2]));
+//    date_before_sort.push_back(Note("Olphovit", "1120-24-11", "lorem ipsum", uuids[3]));
+//    date_before_sort.push_back(Note("Otdykh", "2020-22-11", "lorem ipsum", uuids[1]));
+//    date_before_sort.push_back(Note("Zhara", "0230-30-06", "lorem ipsum", uuids[6]));
+//    date_before_sort.push_back(Note("Zheraf", "0230-02-03", "lorem ipsum", uuids[5]));
+
+
+//    QList&lt;Note&gt; date_after_sort;
+//    date_after_sort.push_back(Note("Alfavit", "4200-09-01", "lorem ipsum", uuids[4]));
+//    date_after_sort.push_back(Note("Otpusk", "3002-10-02", "lorem ipsum", uuids[2]));
+//    date_after_sort.push_back(Note("Otdykh", "2020-22-11", "lorem ipsum", uuids[1]));
+//    date_after_sort.push_back(Note("Ezhednevnik", "1920-20-12", "lorem ipsum", uuids[0]));
+//    date_after_sort.push_back(Note("Olphovit", "1120-24-11", "lorem ipsum", uuids[3]));
+//    date_after_sort.push_back(Note("Zhara", "0230-30-06", "lorem ipsum", uuids[6]));
+//    date_after_sort.push_back(Note("Zheraf", "0230-02-03", "lorem ipsum", uuids[5]));
+
+//    Notes::sortDecNotes(date_before_sort, NoteSortCriterion::Date);
+//    AssertEqual(date_before_sort, date_after_sort, "Sort DEC by date");
+//}
+
+<span style = "background-color:#dfd">int main(int argc, char *argv[]){</span>
+//    {
+//        TestRunner tr;
+//        tr.RunTest(TestAscSorting, "TestAscSorting");
+//        tr.RunTest(TestDecSorting, "TestDecSorting");
+//    }
+
+<span style = "background-color:#dfd">    QApplication app(argc, argv);
+    Notes *win = new Notes();</span>
+
+<span style = "background-color:#dfd">    win-&gt;show();
+    return app.exec();
+}</span></pre>
+	</body>
+</html>

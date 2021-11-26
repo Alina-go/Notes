@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>test_runner.h</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+	<body onload="prettyPrint()">
+        <h4></h4>
+		<pre class="prettyprint lang-cpp linenums">
+
+#include &lt;sstream&gt;
+#include &lt;exception&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include "AboutNote.h"
+
+using namespace std;
+
+<span style = "background-color:#fdd">ostream&amp; operator &lt;&lt; (ostream&amp; os, const Note&amp; s) {
+  os &lt;&lt; "{ " &lt;&lt;</span>
+        s.getName().toStdString() &lt;&lt; " " &lt;&lt;
+        s.getDate().toStdString() &lt;&lt; " " &lt;&lt;
+        s.getText().toStdString() &lt;&lt; " " &lt;&lt;
+        s.getUuid().toString().toStdString()
+  &lt;&lt; " }";
+<span style = "background-color:#fdd">  return os;
+}</span>
+
+template &lt;class T&gt;
+<span style = "background-color:#fdd">ostream&amp; operator &lt;&lt; (ostream&amp; os, const QList&lt;T&gt;&amp; s) {
+  os &lt;&lt; "{";
+  bool first = true;
+  for (const auto&amp; x : s) {
+    if (!first) {
+      os &lt;&lt; ", ";</span>
+    }
+<span style = "background-color:#fdd">    first = false;
+    os &lt;&lt; x;
+  }
+  return os &lt;&lt; "}";
+}</span>
+
+template &lt;class T&gt;
+ostream&amp; operator &lt;&lt; (ostream&amp; os, const set&lt;T&gt;&amp; s) {
+  os &lt;&lt; "{";
+  bool first = true;
+  for (const auto&amp; x : s) {
+    if (!first) {
+      os &lt;&lt; ", ";
+    }
+    first = false;
+    os &lt;&lt; x;
+  }
+  return os &lt;&lt; "}";
+}
+
+template &lt;class K, class V&gt;
+ostream&amp; operator &lt;&lt; (ostream&amp; os, const map&lt;K, V&gt;&amp; m) {
+  os &lt;&lt; "{";
+  bool first = true;
+  for (const auto&amp; kv : m) {
+    if (!first) {
+      os &lt;&lt; ", ";
+    }
+    first = false;
+    os &lt;&lt; kv.first &lt;&lt; ": " &lt;&lt; kv.second;
+  }
+  return os &lt;&lt; "}";
+}
+
+template&lt;class T, class U&gt;
+void AssertEqual(const T&amp; t, const U&amp; u,
+    const string&amp; hint)
+<span style = "background-color:#fdd">{
+  if (t != u) {
+    ostringstream os;
+    os &lt;&lt; "Assertion failed: " &lt;&lt; t &lt;&lt; " != " &lt;&lt; u</span>
+       &lt;&lt; " hint: " &lt;&lt; hint;
+<span style = "background-color:#fdd">    throw runtime_error(os.str());
+  }
+}</span>
+
+inline void Assert(bool b, const string&amp; hint) {
+  AssertEqual(b, true, hint);
+}
+
+class TestRunner {
+public:
+  template &lt;class TestFunc&gt;
+  void RunTest(TestFunc func, const string&amp; test_name) {
+    try {
+	  func();
+	  cerr &lt;&lt; test_name &lt;&lt; " OK" &lt;&lt; endl;
+	} catch (runtime_error&amp; e) {
+	  ++fail_count;
+	  cerr &lt;&lt; test_name &lt;&lt; " fail: " &lt;&lt; e.what() &lt;&lt; endl;
+	}
+  }
+
+  ~TestRunner() {
+    if (fail_count &gt; 0) {
+      cerr &lt;&lt; fail_count &lt;&lt; " unit tests failed. Terminate" &lt;&lt; endl;
+      exit(1);
+    }
+  }
+
+private:
+  int fail_count = 0;
+};</pre>
+	</body>
+</html>

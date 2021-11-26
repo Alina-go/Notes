@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>AboutNote.cpp</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+	<body onload="prettyPrint()">
+        <h4></h4>
+		<pre class="prettyprint lang-cpp linenums">
+#include "AboutNote.h"
+
+<span style = "background-color:#dfd">Note::Note(QString name, QString date, QString text, QUuid uuid) {
+    m_name = name;
+    m_date = date;
+    m_text = text;
+    m_uuid = uuid;
+}</span>
+
+<span style = "background-color:#dfd">QString Note::getName() const{
+    return m_name;
+}</span>
+
+<span style = "background-color:#fdd">void Note::setName(QString name) {
+    m_name = name;
+}</span>
+
+<span style = "background-color:#dfd">QString Note::getDate() const{
+    return m_date;
+}</span>
+
+<span style = "background-color:#fdd">void Note::setDate(QString date) {
+    m_date = date;
+}</span>
+
+<span style = "background-color:#dfd">QString Note::getText() const{
+    return m_text;
+}</span>
+
+<span style = "background-color:#fdd">void Note::setText(QString text) {
+    m_text = text;
+}</span>
+
+<span style = "background-color:#fdd">QUuid Note::getUuid() const {
+    return m_uuid;
+}</span>
+
+<span style = "background-color:#fdd">void Note::setUuid(QUuid uuid) {
+    m_uuid = uuid;
+}</span>
+
+<span style = "background-color:#fdd">bool operator ==(const Note&amp; lhs, const Note&amp; rhs) {
+    if (lhs.getName() == rhs.getName()) {
+        if (lhs.getDate() == rhs.getDate()) {
+            if (lhs.getText() == rhs.getText()) {
+                if (lhs.getUuid() == rhs.getUuid())
+                    return true;</span>
+            }
+        }
+    }
+<span style = "background-color:#fdd">    return false;
+}</span></pre>
+	</body>
+</html>
