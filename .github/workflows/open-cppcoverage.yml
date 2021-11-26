@@ -1,6 +1,6 @@
 name: Open-CppCoverage
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
@@ -12,8 +12,19 @@ jobs:
           cd C:\actions-runner\_work
           C:\actions-runner\_work\clear.bat
           C:\actions-runner\_work\cppcoverage.bat
-          
-      - uses: actions/upload-artifact@v2
+
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-         name: Coverage results
-         path: C:\actions-runner\_work\CoverageReport\
+          source-directory: 'C:\actions-runner-Notes\_work\CoverageReport\'
+          destination-github-username: 'Alina-go'
+          destination-repository-name: 'Notes'
+          user-email: carles3@pina.cat
+          target-branch: gh-pages
+
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #    name: Coverage results
+      #    path: C:\actions-runner\_work\CoverageReport\
