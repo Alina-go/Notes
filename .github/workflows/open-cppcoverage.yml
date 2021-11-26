@@ -20,15 +20,11 @@ jobs:
       #     C:\actions-runner\_work\cppcoverage.bat
 
       - name: Pushes to another repository
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        uses: ad-m/github-push-action@master
         with:
-          source-directory: 'C:\actions-runner-Notes\_work\CoverageReport\'
-          destination-github-username: 'Alina-go'
-          destination-repository-name: 'Notes'
-          user-email: carles3@pina.cat
-          target-branch: gh-pages
+          github_token: ${{ secrets.API_TOKEN_GITHUB }}
+          branch: 'gh-pages'
+          repository: 'Notes'
 
       # - uses: actions/upload-artifact@v2
       #   with:
