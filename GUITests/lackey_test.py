@@ -3,7 +3,7 @@ from lackey import Key, click, wait, type, paste
 
 waitTime = 60
 
-process = subprocess.Popen("C:/actions-runner/_work/Build/Notes/debug/Notes.exe", shell=True)
+process = subprocess.Popen("C:\actions-runner\_work\Notes\Build\Notes\debug\Notes.exe", shell=True)
 
 wait("wait_vb.png",waitTime)
 click("ok_vb.png")
