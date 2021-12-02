@@ -21,7 +21,7 @@ jobs:
            cd C:\actions-runner\_work
            mkdir Build
            cd Build
-           C:\actions-runner\_work\build.bat
+           C:\actions-runner\_work\Notes\Notes\.github\workflows\build.bat
            
       - name: Run Tests
         run: |
