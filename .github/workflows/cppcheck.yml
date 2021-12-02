@@ -13,7 +13,7 @@ jobs:
 
     steps:           
       - name: cppcheck
-        run: C:\actions-runner\_work\cppcheck.bat
+        run: C:\actions-runner\_work\Notes\Notes\.github\workflows\cppcheck.bat
      
   # The second job
   upload-report:
@@ -25,4 +25,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: CppCheck results
-        path: C:\actions-runner\_work\CppCheckReport\
+        path: C:\actions-runner\_work\Notes\CppCheckReport\

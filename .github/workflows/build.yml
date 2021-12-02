@@ -26,7 +26,7 @@ jobs:
       - name: Run Tests
         run: |
           echo Run Tests
-          C:\actions-runner\_work\Build\Tests\debug\Tests.exe
+          C:\actions-runner\_work\Notes\Build\Tests\debug\Tests.exe
           
       - name: Run Lackey
         run: C:\actions-runner\_work\Notes\Notes\GUITests\lackey_test.py

@@ -16,11 +16,8 @@ jobs:
         shell: git-bash.exe {0}
 
     steps:
-      # - name: Generate coverage report
-      #   run: |
-      #     cd C:\actions-runner\_work
-      #     C:\actions-runner\_work\clear.bat
-      #     C:\actions-runner\_work\cppcoverage.bat
+      - name: Generate coverage report
+        run: C:\actions-runner\_work\Notes\Notes\.github\workflows\cppcoverage.bat
 
       - name: Pushes to another repository
         uses: ad-m/github-push-action@master
